@@ -1,13 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import { PROBLEMS } from './data/problems';
-import ProblemList    from './components/ProblemList';
-import MetaphorCard   from './components/MetaphorCard';
-import BreakdownGuide from './components/BreakdownGuide';
-import CodeVisualizer from './components/CodeVisualizer';
-import ComplexityPanel from './components/ComplexityPanel';
-import StepStepper    from './components/StepStepper';
+import { WHITEBOARDS } from './data/whiteboards';
+import ProblemList         from './components/ProblemList';
+import MetaphorCard        from './components/MetaphorCard';
+import BreakdownGuide      from './components/BreakdownGuide';
+import CodeVisualizer      from './components/CodeVisualizer';
+import ComplexityPanel     from './components/ComplexityPanel';
+import StepStepper         from './components/StepStepper';
+import WhiteboardExplainer from './components/WhiteboardExplainer';
 
-const TABS = ['Metaphor', 'Breakdown', 'Code + Steps'];
+const TABS = ['Whiteboard', 'Metaphor', 'Breakdown', 'Code + Steps'];
 
 function App() {
   const [selectedId,      setSelectedId]      = useState(1);
@@ -43,7 +45,7 @@ function App() {
 
   const handleSelectProblem = (id) => {
     setSelectedId(id);
-    setActiveTab('Metaphor');
+    setActiveTab('Whiteboard');
   };
 
   const activeLines = activeTab === 'Code + Steps'
@@ -94,7 +96,7 @@ function App() {
                     ? 'border-indigo-500 text-indigo-600 bg-white'
                     : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50'}`}
               >
-                {tab === 'Metaphor' ? '🧠 ' + tab : tab === 'Breakdown' ? '🔍 ' + tab : '⚡ ' + tab}
+                {tab === 'Whiteboard' ? '✏️ ' + tab : tab === 'Metaphor' ? '🧠 ' + tab : tab === 'Breakdown' ? '🔍 ' + tab : '⚡ ' + tab}
               </button>
             ))}
           </nav>
@@ -102,6 +104,12 @@ function App() {
 
         {/* Tab content */}
         <div className="flex-1 flex overflow-hidden">
+
+          {activeTab === 'Whiteboard' && (
+            <div className="flex-1 overflow-hidden">
+              <WhiteboardExplainer whiteboard={WHITEBOARDS[problem.id]} />
+            </div>
+          )}
 
           {activeTab === 'Metaphor' && (
             <div className="flex-1 p-6 overflow-y-auto">
